@@ -15,23 +15,43 @@
 
 除非用户明确要求，否则优先遵循当前仓库已有结构、命名和依赖方式，不擅自引入新的框架、目录或大型基础设施。
 
-### 产品目录约定
+### 源码目录约定
 
-新合约按产品形态放入对应目录（测试可镜像 `test/<product>/`）：
+推荐 **domain + modules** 布局；各 `products/*.md` 的 `paths` 同时兼容扁平目录（如 `src/masterchef/` 与 `src/modules/masterchef/`）。仅在使用对应路径时适用规则。
 
-| 目录 | 产品形态 | 规则文件 |
-|------|----------|----------|
-| `src/token/` | Token | `products/token.md` |
-| `src/staking/` | Staking Pool | `products/staking.md` |
-| `src/masterchef/` | MasterChef | `products/masterchef.md` |
-| `src/launchpad/` | Launchpad / IDO | `products/launchpad.md` |
-| `src/nft/` | NFT / Membership | `products/nft.md` |
-| `src/governance/` | Governance / Timelock | `products/governance.md` |
-| `src/vault/` | Vault / Strategy | `products/vault.md` |
-| `src/router/` | Router / Aggregator | `products/router.md` |
-| `src/factory/` | Factory / Deployer | `products/factory.md` |
-| `src/bridge/` | Bridge / Cross-chain | `products/bridge.md` |
-| `src/proxy/` | Proxy / Upgradeable | `upgradeability.md` |
+**推荐结构：**
+
+```text
+src/
+├── domain/
+│   ├── staking/          # 锁仓事实（SSOT）
+│   └── tier/             # 积分 / IDO 额度（无单独 tier 规则，见 launchpad.md）
+├── modules/
+│   ├── staking/          # 质押用户入口
+│   ├── masterchef/
+│   ├── launchpad/
+│   └── dex/              # 可选：core/pool、periphery/router|quoter|zap|lens
+├── token/ | nft/ | governance/ | vault/ | bridge/ | proxy/   # 可按需放根级或 modules/ 下
+├── libraries/ | interfaces/ | types/ | errors/               # 横切（可选）
+```
+
+**产品 ↔ 规则映射：**
+
+| 产品形态 | 推荐路径 | 兼容扁平路径 | 规则文件 |
+|----------|----------|--------------|----------|
+| Token | `modules/token/` 或 `token/` | `src/token/**` | `products/token.md` |
+| Staking | `domain/staking/` + `modules/staking/` | `src/staking/**` | `products/staking.md` |
+| MasterChef | `modules/masterchef/` | `src/masterchef/**` | `products/masterchef.md` |
+| Launchpad / IDO | `modules/launchpad/` + `domain/tier/` | `src/launchpad/**` | `products/launchpad.md` |
+| NFT | `modules/nft/` 或 `nft/` | `src/nft/**` | `products/nft.md` |
+| Governance | `governance/` 或 `modules/governance/` | `src/governance/**` | `products/governance.md` |
+| Vault | `modules/vault/` 或 `core/vault/` | `src/vault/**` | `products/vault.md` |
+| Router / DEX | `modules/dex/` | `src/router/**` | `products/router.md` |
+| Factory | `modules/dex/core/` 或 `factory/` | `src/factory/**` | `products/factory.md` |
+| Bridge | `modules/bridge/` 或 `bridge/` | `src/bridge/**` | `products/bridge.md` |
+| Proxy | `proxy/` 或 `modules/proxy/` | `src/proxy/**` | `upgradeability.md` |
+
+测试可镜像：`test/unit/domain/...`、`test/integration/` 等。
 
 ## 2. 角色与优先级
 
@@ -144,21 +164,21 @@ Hub（本文件）→ solidity / security / defi（横切）→ products/*（产
 |------|---------|------|
 | `solidity.md` | `src/**/*.sol` | Solidity 编码与可审计性 |
 | `security.md` | `src/**`, `script/**`, `test/**` 下 `.sol` | 通用安全与高风险场景 |
-| `defi.md` | vault、router、masterchef、staking、launchpad、bridge、lending、amm、oracle 等 | 定价、预言机、滑点、记账横切 |
-| `upgradeability.md` | `src/proxy/**`、`*Proxy*`、`*Upgrade*` | Proxy / 可升级与存储布局 |
+| `defi.md` | `modules/dex/**`、`domain/**`、扁平 vault/router/staking 等 | 定价、预言机、滑点、记账横切 |
+| `upgradeability.md` | `proxy/**`、`modules/proxy/**`、`*Proxy*`、`*Upgrade*` | Proxy / 可升级与存储布局 |
 | `testing-foundry.md` | `test/**`, `script/**`, `foundry.toml` | 测试、Foundry、脚本与部署 |
 
 ### 产品形态规则（`products/`）
 
 | 文件 | `paths`（摘要） | 用途 |
 |------|-----------------|------|
-| `token.md` | `src/token/**`, `*Token*` | ERC20 / NFT 代币 |
-| `staking.md` | `src/staking/**`, `*Staking*`, `*Stake*` | 质押池 |
-| `masterchef.md` | `src/masterchef/**`, `*MasterChef*`, `*Masterchef*` | 多池挖矿 |
-| `launchpad.md` | `src/launchpad/**`, `*Launchpad*`, `*IDO*` | 公募 / IDO |
-| `nft.md` | `src/nft/**`, `*NFT*`, `*Membership*` | NFT / 会员 |
-| `governance.md` | `src/governance/**`, `*Governance*`, `*Timelock*` | 治理与时间锁 |
-| `vault.md` | `src/vault/**`, `*Vault*`, `*Strategy*` | 金库与策略 |
-| `router.md` | `src/router/**`, `*Router*`, `*Aggregator*` | 路由与聚合 |
-| `factory.md` | `src/factory/**`, `*Factory*`, `*Deployer*` | 工厂与部署 |
-| `bridge.md` | `src/bridge/**`, `*Bridge*` | 跨链桥 |
+| `token.md` | `token/**`, `modules/token/**`, `*Token*` | ERC20 等 |
+| `staking.md` | `domain/staking/**`, `modules/staking/**`, `staking/**` | 质押与锁仓 |
+| `masterchef.md` | `modules/masterchef/**`, `masterchef/**`, `*MasterChef*` | 多池挖矿 |
+| `launchpad.md` | `modules/launchpad/**`, `domain/tier/**`, `launchpad/**` | IDO + tier 域 |
+| `nft.md` | `nft/**`, `modules/nft/**`, `dex/**/position/**` | NFT / 仓位 |
+| `governance.md` | `governance/**`, `modules/governance/**` | 治理与时间锁 |
+| `vault.md` | `vault/**`, `modules/vault/**`, `core/vault/**` | 金库与策略 |
+| `router.md` | `modules/dex/**`, `router/**`, `dex/**` | 路由与 DEX 外围 |
+| `factory.md` | `factory/**`, `modules/dex/core/**` | 工厂与池部署 |
+| `bridge.md` | `bridge/**`, `modules/bridge/**` | 跨链桥 |

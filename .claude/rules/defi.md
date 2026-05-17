@@ -1,10 +1,19 @@
 ---
 paths:
   - src/vault/**
+  - src/modules/vault/**
+  - src/core/vault/**
   - src/router/**
+  - src/modules/dex/**
+  - src/dex/**
   - src/masterchef/**
+  - src/modules/masterchef/**
   - src/staking/**
+  - src/domain/staking/**
+  - src/modules/staking/**
   - src/launchpad/**
+  - src/modules/launchpad/**
+  - src/domain/tier/**
   - src/bridge/**
   - src/**/lending/**
   - src/**/amm/**

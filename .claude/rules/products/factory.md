@@ -1,6 +1,8 @@
 ---
 paths:
   - src/factory/**
+  - src/modules/dex/core/**
+  - src/modules/factory/**
   - src/**/*Factory*.sol
   - src/**/*Deployer*.sol
 ---
@@ -9,7 +11,7 @@ paths:
 
 ## 适用范围
 
-配对创建、池子部署、CREATE2 确定性地址。
+配对创建、池子部署、CREATE2 确定性地址。V3 Factory 可放在 `src/modules/dex/core/`；兼容 `src/factory/`。
 
 ## 设计检查清单
 

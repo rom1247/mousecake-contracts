@@ -1,6 +1,7 @@
 ---
 paths:
   - src/bridge/**
+  - src/modules/bridge/**
   - src/**/*Bridge*.sol
 ---
 

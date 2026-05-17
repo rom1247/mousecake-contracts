@@ -1,6 +1,8 @@
 ---
 paths:
   - src/vault/**
+  - src/modules/vault/**
+  - src/core/vault/**
   - src/**/*Vault*.sol
   - src/**/*Strategy*.sol
 ---

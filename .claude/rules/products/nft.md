@@ -1,6 +1,8 @@
 ---
 paths:
   - src/nft/**
+  - src/modules/nft/**
+  - src/modules/dex/**/position/**
   - src/**/*NFT*.sol
   - src/**/*Membership*.sol
 ---

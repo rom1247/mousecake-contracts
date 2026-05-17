@@ -1,6 +1,7 @@
 ---
 paths:
   - src/proxy/**
+  - src/modules/proxy/**
   - src/**/*Proxy*.sol
   - src/**/*Upgrade*.sol
   - script/**/*Upgrade*.s.sol

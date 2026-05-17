@@ -1,6 +1,9 @@
 ---
 paths:
   - src/router/**
+  - src/modules/dex/**
+  - src/modules/router/**
+  - src/dex/**
   - src/**/*Router*.sol
   - src/**/*Aggregator*.sol
 ---
@@ -9,7 +12,7 @@ paths:
 
 ## 适用范围
 
-多跳 swap、聚合路由、ETH/WETH 包装。
+多跳 swap、聚合路由、ETH/WETH 包装。DEX 推荐 `src/modules/dex/periphery/router/`；兼容扁平 `src/router/`。
 
 ## 设计检查清单
 
@@ -29,6 +32,7 @@ paths:
 ## 外部依赖
 
 - `defi.md` 横切规则；ERC20 见 `security.md`
+- Pool 逻辑在 `modules/dex/core/pool/` 时，定价不变量见池合约与 `defi.md`
 
 ## 测试要点
 

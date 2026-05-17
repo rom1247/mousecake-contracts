@@ -1,6 +1,7 @@
 ---
 paths:
   - src/token/**
+  - src/modules/token/**
   - src/**/*Token*.sol
 ---
 

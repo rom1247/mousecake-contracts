@@ -1,6 +1,7 @@
 ---
 paths:
   - src/masterchef/**
+  - src/modules/masterchef/**
   - src/**/*MasterChef*.sol
   - src/**/*Masterchef*.sol
 ---
@@ -10,6 +11,11 @@ paths:
 ## 适用范围
 
 多池流动性挖矿、`poolId`、`allocPoint`、待领取与复投。
+
+## 目录约定
+
+- 推荐 `src/modules/masterchef/`；兼容扁平 `src/masterchef/`。
+- 入池条件通过 `IStaking` 或 registry 读取锁仓状态，不直接 import `modules/staking` 实现。
 
 ## 设计检查清单
 

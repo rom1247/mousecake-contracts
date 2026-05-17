@@ -1,6 +1,7 @@
 ---
 paths:
   - src/governance/**
+  - src/modules/governance/**
   - src/**/*Governance*.sol
   - src/**/*Timelock*.sol
   - src/**/*Governor*.sol

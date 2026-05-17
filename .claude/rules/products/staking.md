@@ -1,6 +1,8 @@
 ---
 paths:
   - src/staking/**
+  - src/domain/staking/**
+  - src/modules/staking/**
   - src/**/*Staking*.sol
   - src/**/*Stake*.sol
 ---
@@ -10,6 +12,12 @@ paths:
 ## 适用范围
 
 单池或单资产质押与奖励分发。多池权重与 `allocPoint` 见 `products/masterchef.md`。
+
+## 目录约定
+
+- `src/domain/staking/`：锁仓事实（时长、金额、解锁时间等）优先放此处，供其他模块只读。
+- `src/modules/staking/` 或 `src/staking/`：用户入口（`stake` / `withdraw` / `claim`）。
+- `src/domain/tier/` 若存在：积分逻辑见 `products/launchpad.md`；本规则适用于 tier 对锁仓状态的读取，不在 staking 模块重复实现 IDO 额度公式。
 
 ## 设计检查清单
 
@@ -28,6 +36,7 @@ paths:
 ## 外部依赖
 
 - 奖励/质押 ERC20 见 `security.md`；定价相关见 `defi.md`
+- 模块间仅通过 `interfaces` / registry 引用，禁止 import 其他 `modules/*` 实现
 
 ## 测试要点
 
